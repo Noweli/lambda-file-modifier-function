@@ -1,44 +1,61 @@
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.S3Events;
-using Amazon.S3;
-using Amazon.S3.Model;
+using FileModification.FileProcessing;
 using FileModification.Models;
 using FileModification.Resources;
+using FileModification.S3;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
 namespace FileModification
 {
-
     public class Function
     {
-        public async Task<Result> FunctionHandler(S3Event s3Event, ILambdaContext context)
+        public async Task<Result<bool>> FunctionHandler(S3Event s3Event, ILambdaContext context)
         {
-            var objectKey = s3Event.Records[0].S3.Object.Key;
             var bucketName = s3Event.Records[0].S3.Bucket.Name;
+            var objectKey = s3Event.Records[0].S3.Object.Key;
 
-            if (string.IsNullOrWhiteSpace(objectKey))
+            var retrieveMetadataResult = await S3Handler.GetFileTypeCodeFromObject(bucketName, objectKey);
+
+            if (!retrieveMetadataResult.IsSuccessful)
             {
-                return new Result(false, ErrorMessages.S3Validation_KeyIsNullOrEmpty);
-            }
-            
-            if (string.IsNullOrWhiteSpace(bucketName))
-            {
-                return new Result(false, ErrorMessages.S3Validation_BucketNameIsNullOrEmpty);
+                return new Result<bool>(false, retrieveMetadataResult.ErrorMessage);
             }
 
-            var s3Client = new AmazonS3Client();
+            var determinedProcessor = ProcessorSelector.GetFileProcessor(retrieveMetadataResult.ResultObject);
 
-            var objectAttributesRequest = new GetObjectAttributesRequest
+            if (determinedProcessor is null)
             {
-                BucketName = bucketName,
-                Key = objectKey
-            };
+                return new Result<bool>(false, ErrorMessages.ProcessorSelection_FailedToDetermineProcessor);
+            }
 
-            //Get object metadata
-            var objectAttributes = await s3Client.GetObjectAttributesAsync(objectAttributesRequest);
+            var fileForModificationKey = await CopyFileForModification(bucketName, objectKey);
             
+            // Process file
+            var processResult = await determinedProcessor.ProcessFile(await S3Handler.GetFileStream(bucketName, fileForModificationKey));
+
+            return processResult;
+        }
+        
+        private static async Task<string> CopyFileForModification(string sourceBucketName, string sourceObjectKey)
+        {
+            string destinationObjectKey;
+            if (sourceObjectKey.Contains('/'))
+            {
+                var indexOfLastSlashInObjectKey = sourceObjectKey.LastIndexOf('/') + 1;
+                destinationObjectKey = sourceObjectKey[indexOfLastSlashInObjectKey..];
+            }
+            else
+            {
+                destinationObjectKey = sourceObjectKey;
+            }
+
+            _ = await S3Handler.CopyS3Object(sourceBucketName, sourceObjectKey,
+                sourceBucketName, destinationObjectKey);
+
+            return destinationObjectKey;
         }
     }
 }

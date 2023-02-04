@@ -24,4 +24,25 @@
     <data name="S3Validation_BucketNameIsNullOrEmpty" xml:space="preserve">
         <value>Bucket name is null or empty.</value>
     </data>
+    <data name="S3Validation_MetadataWithTypeCodeKeyNotFound" xml:space="preserve">
+        <value>Metadata with key {0} not found, processor cannot be selected without {0} metadata entry.</value>
+    </data>
+    <data name="S3Validation_MetadataValueIsNullOrEmpty" xml:space="preserve">
+        <value>Metadata value is null or empty. Processor cannot be selected without value.</value>
+    </data>
+    <data name="ProcessorSelection_FailedToDetermineProcessor" xml:space="preserve">
+        <value>Failed to determine processor for S3 object. Check metadata with key {0}.</value>
+    </data>
+    <data name="S3Validation_CopyObject_DestinationIsNullOrEmpty" xml:space="preserve">
+        <value>Destination bucket name and destination object key cannot be empty.</value>
+    </data>
+    <data name="S3Validation_CopyObject_SourceIsNullOrEmpty" xml:space="preserve">
+        <value>Source bucket name and source object key cannot be empty.</value>
+    </data>
+    <data name="S3Handler_CopyObjectFailed" xml:space="preserve">
+        <value>Copy object failed.</value>
+    </data>
+    <data name="FileProcessor_CannotWriteFile" xml:space="preserve">
+        <value>Cannot write file.</value>
+    </data>
 </root>

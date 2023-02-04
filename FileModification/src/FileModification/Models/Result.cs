@@ -1,13 +1,15 @@
 ﻿namespace FileModification.Models;
 
-public class Result
+public class Result<T>
 {
-    private bool IsSuccessful { get; }
-    private string ErrorMessage { get; }
+    public bool IsSuccessful { get; }
+    public string ErrorMessage { get; }
+    public T ResultObject { get; }
 
-    public Result(bool isSuccessful, string errorMessage = "")
+    public Result(bool isSuccessful, string errorMessage = "", T resultObject = default!)
     {
         IsSuccessful = isSuccessful;
         ErrorMessage = errorMessage;
+        ResultObject = resultObject;
     }
 }

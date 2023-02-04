@@ -60,6 +60,33 @@ namespace FileModification.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot write file..
+        /// </summary>
+        internal static string FileProcessor_CannotWriteFile {
+            get {
+                return ResourceManager.GetString("FileProcessor_CannotWriteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to determine processor for S3 object. Check metadata with key {0}..
+        /// </summary>
+        internal static string ProcessorSelection_FailedToDetermineProcessor {
+            get {
+                return ResourceManager.GetString("ProcessorSelection_FailedToDetermineProcessor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy object failed..
+        /// </summary>
+        internal static string S3Handler_CopyObjectFailed {
+            get {
+                return ResourceManager.GetString("S3Handler_CopyObjectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bucket name is null or empty..
         /// </summary>
         internal static string S3Validation_BucketNameIsNullOrEmpty {
@@ -69,11 +96,47 @@ namespace FileModification.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination bucket name and destination object key cannot be empty..
+        /// </summary>
+        internal static string S3Validation_CopyObject_DestinationIsNullOrEmpty {
+            get {
+                return ResourceManager.GetString("S3Validation_CopyObject_DestinationIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source bucket name and source object key cannot be empty..
+        /// </summary>
+        internal static string S3Validation_CopyObject_SourceIsNullOrEmpty {
+            get {
+                return ResourceManager.GetString("S3Validation_CopyObject_SourceIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Object key is null or empty..
         /// </summary>
         internal static string S3Validation_KeyIsNullOrEmpty {
             get {
                 return ResourceManager.GetString("S3Validation_KeyIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metadata value is null or empty. Processor cannot be selected without value..
+        /// </summary>
+        internal static string S3Validation_MetadataValueIsNullOrEmpty {
+            get {
+                return ResourceManager.GetString("S3Validation_MetadataValueIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metadata with key {0} not found, processor cannot be selected without {0} metadata entry..
+        /// </summary>
+        internal static string S3Validation_MetadataWithTypeCodeKeyNotFound {
+            get {
+                return ResourceManager.GetString("S3Validation_MetadataWithTypeCodeKeyNotFound", resourceCulture);
             }
         }
     }
